@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Angular JS Application</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> 
+        <!--<script src="AngularJSFiles/angular.js"></script>
+        <script src="JQueryFiles/jquery.js"></script>-->
+    </head>
+    <body>
+        <center>
+            <h1>STUDENT DETAILS</h1><hr>
+            <div ng-app="mainApp" data-ng-controller="CRUDOperations">
+                <table>
+                    <tr>
+                        <td>USN : </td>
+                        <td><input type="text" data-ng-model="StudentModel.usn"/></td>
+                    </tr>
+                    <tr>
+                        <td>Name : </td>
+                        <td><input type="text" data-ng-model="StudentModel.name"/></td>
+                    </tr>
+                    <tr>
+                        <td>Sex : </td>
+                        <td><input type="text" data-ng-model="StudentModel.sex"/></td>
+                    </tr>
+                    <tr>
+                        <td>Semester : </td>
+                        <td><input type="text" data-ng-model="StudentModel.sem"/></td>
+                    </tr>
+                    <tr>
+                        <td>Branch : </td>
+                        <td><input type="text" data-ng-model="StudentModel.branch"/></td>
+                    </tr>
+                    <tr>
+                        <td>College : </td>
+                        <td><input type="text" data-ng-model="StudentModel.college"/></td>
+                    </tr> 
+                    <tr align="center">                  
+                        <td colspan='2' align="center"><input type="button" value="Save Data" data-ng-click="AddData()"/></td>
+                    </tr>
+                    <tr align="center">                  
+                        <td colspan='2' align="center"><input type="button" value="Update Data" data-ng-click="UpdateData()"/></td>
+                    </tr>
+                </table>
+                <br>
+                <hr>
+                <br>
+                <table border='1'>
+                    <thead>
+                        <th>USN</th>
+                        <th>Name</th>
+                        <th>Sex</th>
+                        <th>Semester</th>
+                        <th>Branch</th>
+                        <th>College</th>
+                    </thead>
+                    <tr data-ng-repeat="Stud in StudentList" data-ng-click="BindSelectedData(Stud)">
+                        <td>{{ Stud.usn }}</td>
+                        <td>{{ Stud.name }}</td>
+                        <td>{{ Stud.sex }}</td>
+                        <td>{{ Stud.sem }}</td>
+                        <td>{{ Stud.branch }}</td>
+                        <td>{{ Stud.college }}</td>
+                        <td><input type="button" value="Delete" data-ng-click="DeleteData(Stud)"/></td>
+                    </tr>
+                </table>
+            </div>        
+        </center>
+    <script type="text/javascript">
+        var app = angular.module("mainApp", []);
+        app.controller('CRUDOperations', function($scope){
+            
+            $scope.StudentModel = {
+                usn : '',
+                name : '',
+                sex : '',
+                sem : '',
+                branch : '',
+                college : '',
+            };
+            
+            $scope.StudentList = [];
+            
+            $scope.AddData = function(){
+                var student = {
+                    usn : $scope.StudentModel.usn,
+                    name : $scope.StudentModel.name,
+                    sex : $scope.StudentModel.sex,
+                    sem : $scope.StudentModel.sem,
+                    branch : $scope.StudentModel.branch,
+                    college : $scope.StudentModel.college
+                };
+                $scope.StudentList.push(student);
+                ClearModel();
+            };
+            
+            $scope.DeleteData = function(student){
+                var index = $scope.StudentList.indexOf(student);
+                $scope.StudentList.splice(index, 2);
+            };
+            
+            $scope.BindSelectedData = function(student){
+                $scope.StudentModel.usn = student.usn;
+                $scope.StudentModel.name = student.name;
+                $scope.StudentModel.sex = student.sex;
+                $scope.StudentModel.sem = student.sem;
+                $scope.StudentModel.branch = student.branch;
+                $scope.StudentModel.college = student.college;
+            };
+            
+            $scope.UpdateData = function(){
+                $.grep($scope.StudentList, function(s){
+                    if(s.name === $scope.StudentModel.name){
+                        s.name = $scope.StudentModel.name;
+
+                        s.usn = $scope.StudentModel.usn;
+                        s.sex = $scope.StudentModel.sex;
+                        s.sem = $scope.StudentModel.sem;
+                        s.branch = $scope.StudentModel.branch;
+                        s.college = $scope.StudentModel.college;                        
+                    }
+                });
+                ClearModel();
+            };
+        
+            function ClearModel(){
+                $scope.StudentModel.usn = '';
+                $scope.StudentModel.name = '';
+                $scope.StudentModel.sex = '';
+                $scope.StudentModel.sem = '';
+                $scope.StudentModel.branch = '';
+                $scope.StudentModel.college = '';
+            }
+        });
+    </script>
+    </body>
+    
+    
+    
+</html>
+
